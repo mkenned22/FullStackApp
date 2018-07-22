@@ -24,6 +24,8 @@
     "axios": "^0.16.2",
     "body-parser": "^1.17.2",
     "express": "^4.15.4",
-    "mongoose": "^4.11.7"
+    "mongoose": "^4.11.7",
+    "passport": "^0.4.0",
+    "react-modal": "^3.5.1"
   }
 }
