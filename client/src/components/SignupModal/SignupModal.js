@@ -53,13 +53,12 @@ const textStyle = {
 class SignupModal extends React.Component {
 
     render() {
-
         return (
             <div id="signupModal" class="modal" style={modalStyle}>
                 <div class="modal-dialog">
                     <div class="loginmodal-container" style={containerStyle}>
                         <h1 style={h1Style}>Create an Account</h1><br />
-                        <form>
+                        <form action="/signup" method="post">
                             <input style={textStyle} type="text" name="firstName" placeholder="First Name" />
                             <input style={textStyle} type="text" name="lastName" placeholder="Last Name" />
                             <input style={textStyle} type="text" name="email" placeholder="Email" />
