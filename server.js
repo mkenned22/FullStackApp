@@ -9,6 +9,7 @@ const app = express()
 const PORT = process.env.PORT || 3001
 // Route requires
 const user = require('./controllers/user')
+const book = require("./controllers/book")
 
 // MIDDLEWARE
 app.use(morgan('dev'))
@@ -36,6 +37,7 @@ app.use(passport.session()) // calls the deserializeUser
 
 // Routes
 app.use('/user', user)
+app.use(book)
 
 // Starting Server 
 app.listen(PORT, () => {
