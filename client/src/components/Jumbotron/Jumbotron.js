@@ -22,12 +22,16 @@ const titleStyle = {
 
 class Jumbotron extends React.Component {
 
-  render() {
+  constructor() {
+    super()
+}
 
+  render() {
+    const loggedIn = this.props.loggedIn;
     return (
       <div class="container" style={containerStyles}>
         <div class="jumbotron" style={jumbotronStyles}>
-          <h2 id="journey" style={titleStyle}>Start your next journey...</h2>
+        <h2 id="journey" style={titleStyle}>Start your next journey...</h2>
           <div class="row">
             <div class="col-lg-6 col-lg-offset-3">
               <div class="input-group" style={inputStyles}>

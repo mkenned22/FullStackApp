@@ -1,23 +1,23 @@
 import React from "react";
-import { Col, Row, Container } from "../../components/Grid";
-import Header from "../../components/Header";
-import Jumbotron from "../../components/Jumbotron";
 
-class NoMatch extends React.Component {
+class Dashboard extends React.Component {
 
     render() {
 
         return (
-            <Container fluid>
-                <Row>
-                    <Col size="md-4">
-                        <h1>Welcome to your Dashboard</h1>
-
-                    </Col>
-                </Row>
-            </Container>
+            <div class="container">
+                <div class="row"><h1>Welcome to your Dashboard</h1></div>
+                <div class="row">
+                    <button type="button" class="btn btn-outline-primary"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a recent trip</button>
+                    <div class="button"></div>
+                </div>
+            </div>
+            
         )
     }
 }
 
-export default NoMatch;
+export default Dashboard;
+
+
+
