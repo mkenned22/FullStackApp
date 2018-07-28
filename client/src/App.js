@@ -6,9 +6,9 @@ import Signup from './components/sign-up'
 import LoginForm from './components/login-form'
 import Navbar from './components/navbar'
 import Home from './components/home'
-import Dashboard from './pages/Dashboard'
 import Books from './pages/Books'
 import Detail from './pages/Detail'
+//import Login from './pages/Login'
 
 class App extends Component {
   constructor() {
@@ -73,19 +73,11 @@ class App extends Component {
             <Signup/>}
         />
         <Route
-          path="/dashboard"
-          render={() =>
-            <Dashboard/>}
-        />
-        <Route
           path="/books"
           render={() =>
             <Books/>}
         />
-        <Route 
-          exact path="/books/:id" 
-          render={() =>
-          <Detail/>}
+        <Route exact path="/books/:id" component={Detail} 
         />
       </div>
     );

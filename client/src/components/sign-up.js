@@ -1,16 +1,6 @@
-import React, { Component } from 'react'
-import axios from 'axios'
-
-const containerStyles = {
-    "display": "flex",
-    "min-height": "calc(100vh - 120px)"
-}
-
-const formStyles = {
-    "background-color": 'transparent',
-    "text-align": 'center',
-    "margin": "auto"
-}
+import React, { Component } from 'react';
+import axios from 'axios';
+import '../pages/Login/Login.css';
 
 class Signup extends Component {
 	constructor() {
@@ -59,49 +49,16 @@ class Signup extends Component {
 
 render() {
 	return (
-		<div className="container" style={containerStyles}>
-			<form className="form-horizontal" style={formStyles}>
-			<h4>Sign up</h4>
-				<div className="form-group">
-					<div className="col-1 col-ml-auto">
-						<label className="form-label" htmlFor="username">Username</label>
-					</div>
-					<div className="col-3 col-mr-auto">
-						<input className="form-input"
-							type="text"
-							id="username"
-							name="username"
-							placeholder="Username"
-							value={this.state.username}
-							onChange={this.handleChange}
-						/>
-					</div>
-				</div>
-				<div className="form-group">
-					<div className="col-1 col-ml-auto">
-						<label className="form-label" htmlFor="password">Password: </label>
-					</div>
-					<div className="col-3 col-mr-auto">
-						<input className="form-input"
-							placeholder="password"
-							type="password"
-							name="password"
-							value={this.state.password}
-							onChange={this.handleChange}
-						/>
-					</div>
-				</div>
-				<div className="form-group ">
-					<div className="col-7"></div>
-					<button
-						className="btn btn-primary col-1 col-mr-auto"
-						onClick={this.handleSubmit}
-						type="submit"
-					>Sign up</button>
-				</div>
-			</form>
-		</div>
-
+		<div class="container">
+        <form class="form-signin" onSubmit={this.onSubmit}>
+          <h2 class="form-signin-heading">Register</h2>
+          <label for="inputEmail" class="sr-only">Email address</label>
+          <input type="email" class="form-control" placeholder="Email address" name="username" value={this.state.username} onChange={this.handleChange} required/>
+          <label for="inputPassword" class="sr-only">Password</label>
+          <input type="password" class="form-control" placeholder="Password" name="password" value={this.state.password} onChange={this.handleChange} required/>
+          <button class="btn btn-lg btn-primary btn-block" type="submit" onClick={this.handleSubmit}>Register</button>
+        </form>
+      </div>
 	)
 }
 }

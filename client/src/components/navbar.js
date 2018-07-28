@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { Route, Link } from 'react-router-dom'
 import axios from 'axios'
+import SP from "../../src/SafePassage.png"
 
 const navStyle = {
     "background-color": "transparent",
@@ -10,7 +11,7 @@ const navStyle = {
 const navbarbrandStyle = {
     "background-color": "transparent",
     "marginTop": "-12px",
-    "float":"left"
+    "float": "left"
 }
 const menubuttonStyle = {
     "background-color": "transparent",
@@ -73,59 +74,59 @@ class Navbar extends Component {
             <header>
                 <nav class="navbar navbar-default" style={navStyle}>
                     <a class="navbar-brand" style={navbarbrandStyle} href="/">
-                        <span id="logo-font" style={logofontStyle}><img id="logo" style={logoStyle} src="images/SafePassage.png" />&nbsp;&nbsp;SafePassage</span>
+                        <span id="logo-font" style={logofontStyle}><img id="logo" style={logoStyle} src={SP} />&nbsp;&nbsp;SafePassage</span>
                     </a>
-                        {loggedIn ? (
-                            <div class="dropdown-container" style={dropdowncontainerStyle}>
+                    {loggedIn ? (
+                        <div class="dropdown-container" style={dropdowncontainerStyle}>
                             <button class="btn btn-default btn-lg dropdown-toggle" style={menubuttonStyle} type="button" data-toggle="dropdown" aria-haspopup="true"
                                 aria-expanded="false">
                                 <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
                             </button>
                             <ul class="dropdown-menu" style={dropdownmenuStyle}>
                                 <li>
-                                    <Link to="/dashboard" className="btn btn-link text-secondary">
-                                  <span class="glyphicon glyphicon-blackboard" aria-hidden="true"></span>&nbsp;&nbsp;Dashboard
+                                    <Link to="/dashboard" className="btn btn-link">
+                                        <span class="glyphicon glyphicon-blackboard" aria-hidden="true"></span>&nbsp;&nbsp;Dashboard
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to="/" className="btn btn-link text-secondary" onClick={this.logout}>
+                                    <Link to="/" className="btn btn-link" onClick={this.logout}>
                                         <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>&nbsp;&nbsp;Log Out
                                     </Link>
                                 </li>
                                 <li role="separator" class="divider"></li>
                                 <li>
-                                <Link to="/" className="btn btn-link">
+                                    <Link to="/" className="btn btn-link">
                                         <span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;&nbsp;Home
                                         </Link>
                                 </li>
                             </ul>
                         </div>
-                        ) : (
+                    ) : (
                             <div class="dropdown-container" style={dropdowncontainerStyle}>
-                            <button class="btn btn-default btn-lg dropdown-toggle" style={menubuttonStyle} type="button" data-toggle="dropdown" aria-haspopup="true"
-                                aria-expanded="false">
-                                <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
-                            </button>
-                            <ul class="dropdown-menu" style={dropdownmenuStyle}>
-                                <li>
-                                <Link to="/signup" className="btn btn-link">
-                                        <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>&nbsp;&nbsp;Sign Up</Link>
-                                </li>
-                                <li>
-                                <Link to="/login" className="btn btn-link text-secondary">
-                                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;Login
+                                <button class="btn btn-default btn-lg dropdown-toggle" style={menubuttonStyle} type="button" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">
+                                    <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
+                                </button>
+                                <ul class="dropdown-menu" style={dropdownmenuStyle}>
+                                    <li>
+                                        <Link to="/signup" className="btn btn-link">
+                                            <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>&nbsp;&nbsp;Sign Up</Link>
+                                    </li>
+                                    <li>
+                                        <Link to="/login" className="btn btn-link text-secondary">
+                                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;Login
                                     </Link>
-                                </li>
-                                <li role="separator" class="divider"></li>
-                                <li>
-                                <Link to="/" className="btn btn-link">
-                                        <span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;&nbsp;Home
+                                    </li>
+                                    <li role="separator" class="divider"></li>
+                                    <li>
+                                        <Link to="/" className="btn btn-link">
+                                            <span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;&nbsp;Home
                                         </Link>
-                                </li>
-                            </ul>
-                        </div>
-                                
-                            )}
+                                    </li>
+                                </ul>
+                            </div>
+
+                        )}
                 </nav>
             </header>
         );

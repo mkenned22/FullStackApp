@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Redirect, Link } from 'react-router-dom'
 import axios from 'axios'
-import '../pages/Login/Login.css';
+import './Login.css'
 
 class LoginForm extends Component {
     constructor() {
@@ -56,22 +56,27 @@ class LoginForm extends Component {
         if (this.state.redirectTo) {
             return <Redirect to={{ pathname: this.state.redirectTo }} />
         } else {
-            return (
-                <div class="container">
-                    <form className="form-signin">
-                    <h2 class="form-signin-heading">Please sign in</h2>
-                    <label for="inputEmail" class="sr-only">Email address</label>
-          <input type="email" class="form-control" placeholder="Email address" name="username" value={this.state.username} onChange={this.handleChange} required/>
-          <label for="inputPassword" class="sr-only">Password</label>
-          <input type="password" class="form-control" placeholder="Password" name="password" value={this.state.password} onChange={this.handleChange} required/>
-          <button class="btn btn-lg btn-primary btn-block" type="submit" onClick={this.handleSubmit}>Login</button>
-          <p>
-            Not a member? <Link className="form-signin-heading" to="/register"><span class="glyphicon glyphicon-plus-sign form-signin-heading" aria-hidden="true"></span> Register here</Link>
-          </p>
-          </form>
-      </div>
-                        
-            )
+          const { username, password, message } = this.state;
+          return (
+            <div class="container">
+              <form class="form-signin" onSubmit={this.onSubmit}>
+                {message !== '' &&
+                  <div class="alert alert-warning alert-dismissible" role="alert">
+                    { message }
+                  </div>
+                }
+                <h2 class="form-signin-heading">Please sign in</h2>
+                <label for="inputEmail" class="sr-only">Email address</label>
+                <input type="email" class="form-control" placeholder="Email address" name="username" value={username} onChange={this.onChange} required/>
+                <label for="inputPassword" class="sr-only">Password</label>
+                <input type="password" class="form-control" placeholder="Password" name="password" value={password} onChange={this.onChange} required/>
+                <button class="btn btn-lg btn-primary btn-block" type="submit" onSubmit={this.handleSubmit}>Login</button>
+                <p>
+                  Not a member? <Link to="/register"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Register here</Link>
+                </p>
+              </form>
+            </div>
+          );
         }
     }
 }

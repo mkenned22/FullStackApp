@@ -1,4 +1,5 @@
 import React from "react";
+import axios from 'axios';
 import Jumbotron from "../../components/Jumbotron";
 import DeleteBtn from "../../components/DeleteBtn";
 import API from "../../utils/API";
@@ -13,13 +14,47 @@ class Books extends React.Component {
       books: [],
       title: "",
       author: "",
-      synopsis: ""
+      synopsis: "",
+      loggedIn: false,
+      username: null
     };
+
+    this.getUser = this.getUser.bind(this)
+    this.componentDidMount = this.componentDidMount.bind(this)
+    this.updateUser = this.updateUser.bind(this)
+
   }
 
+  
   // When the component mounts, load all books and save them to this.state.books
   componentDidMount() {
+    this.getUser();
     this.loadBooks();
+  }
+
+  updateUser (userObject) {
+    this.setState(userObject)
+  }
+
+  getUser() {
+    axios.get('/user/').then(response => {
+      console.log('Get user response: ')
+      console.log(response.data)
+      if (response.data.user) {
+        console.log('Get User: There is a user saved in the server session: ')
+
+        this.setState({
+          loggedIn: true,
+          username: response.data.user.username
+        })
+      } else {
+        console.log('Get user: no user');
+        this.setState({
+          loggedIn: false,
+          username: null
+        })
+      }
+    })
   }
 
   // Loads all books  and sets them to this.state.books
@@ -63,64 +98,34 @@ class Books extends React.Component {
 
   render() {
     return (
-      <Container fluid>
-        <Row>
-          <Col size="md-6">
-            <Jumbotron>
-              <h1>What Books Should I Read?</h1>
-            </Jumbotron>
-            <form>
-              <Input
-                value={this.state.title}
-                onChange={this.handleInputChange}
-                name="title"
-                placeholder="Title (required)"
-              />
-              <Input
-                value={this.state.author}
-                onChange={this.handleInputChange}
-                name="author"
-                placeholder="Author (required)"
-              />
-              <TextArea
-                value={this.state.synopsis}
-                onChange={this.handleInputChange}
-                name="synopsis"
-                placeholder="Synopsis (Optional)"
-              />
-              <FormBtn
-                disabled={!(this.state.author && this.state.title)}
-                onClick={this.handleFormSubmit}
-              >
-                Submit Book
-              </FormBtn>
-            </form>
-          </Col>
-          <Col size="md-6 sm-12">
-            <Jumbotron>
-              <h1>Books On My List</h1>
-            </Jumbotron>
-            {this.state.books.length ? (
-              <List>
-                {this.state.books.map(book => {
-                  return (
-                    <ListItem key={book._id}>
-                      <a href={"/books/" + book._id}>
-                        <strong>
-                          {book.title} by {book.author}
-                        </strong>
-                      </a>
-                      <DeleteBtn onClick={() => this.deleteBook(book._id)} />
-                    </ListItem>
-                  );
-                })}
-              </List>
-            ) : (
-                <h3>No Results to Display</h3>
-              )}
-          </Col>
-        </Row>
-      </Container>
+      <div class="container">
+        <div class="row"><h1>Welcome {this.state.username}</h1></div>
+        <div class="row">
+          
+          {this.state.books.length ? (
+            <div>
+            <h3>Your past trips:</h3>
+            <List>
+              {this.state.books.map(book => {
+                return (
+                  <ListItem key={book._id}>
+                      <span><strong>Where:</strong> {book.title} &nbsp;&nbsp; <strong>When:</strong> {book.author}</span>
+                      <a href={"/books/" + book._id}><button>Update</button></a>
+                    <DeleteBtn onClick={() => this.deleteBook(book._id)} />
+                  </ListItem>
+                );
+              })}
+            </List>
+            </div>
+          ) : (
+              <h3>Share where you've been and get recommendations of where to go next!</h3>
+            )}
+          <button type="button" class="btn btn-outline-primary"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a recent trip</button>
+          <div class="button"></div>
+        </div>
+      </div>
+
+
     );
   }
 }
