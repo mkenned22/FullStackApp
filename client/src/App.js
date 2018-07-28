@@ -73,11 +73,11 @@ class App extends Component {
             <Signup/>}
         />
         <Route
-          path="/books"
+          path="/dashboard"
           render={() =>
             <Books/>}
         />
-        <Route exact path="/books/:id" component={Detail} 
+        <Route exact path="/dashboard/:id" component={Detail} 
         />
       </div>
     );
