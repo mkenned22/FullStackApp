@@ -16,7 +16,8 @@ class Books extends React.Component {
       author: "",
       synopsis: "",
       loggedIn: false,
-      username: null
+      username: null,
+      isUpdate: false
     };
 
     this.getUser = this.getUser.bind(this)
@@ -28,6 +29,10 @@ class Books extends React.Component {
   componentDidMount() {
     this.getUser();
     this.loadBooks();
+  }
+
+  handleUpdate(isUpdate) {
+    this.setState({ isUpdate: isUpdate })
   }
 
   updateUser (userObject) {
@@ -83,6 +88,7 @@ class Books extends React.Component {
   // Then reload books from the database
   handleFormSubmit = event => {
     event.preventDefault();
+    this.handleUpdate(false);
     if (this.state.title && this.state.author) {
       API.saveBook({
         title: this.state.title,
@@ -94,30 +100,65 @@ class Books extends React.Component {
     }
   };
 
-  render() {
-    return (
-      <Container fluid>
+  getReadOnly = () => (
+    <div class="container">
         <div class="row"><h1>Welcome {this.state.username}</h1></div>
-        <Row>
-          <Col size="md-6">
-            <form>
+        {this.state.books.length ? (
+            <div>
+            <h3>Your past trips:</h3>
+            <List>
+              {this.state.books.map(book => {
+                return (
+                  <ListItem key={book._id}>
+                      <span><strong>Where:</strong> {book.title} &nbsp;&nbsp; <strong>When:</strong> {book.author}</span>
+                      <a href={"/dashboard/" + book._id}><button>Update</button></a>
+                    <DeleteBtn onClick={() => this.deleteBook(book._id)} />
+                  </ListItem>
+                );
+              })}
+            </List>
+            </div>
+          ) : (
+              <h3>Share where you've been and get recommendations of where to go next!</h3>
+            )}
+          <button type="button" class="btn btn-outline-primary" onClick={() => this.handleUpdate(true)}><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a recent trip</button>
+      </div>
+  );
+
+  getUpdateform = () => (
+    <div class="container">
+        <div class="row"><h1>Welcome {this.state.username}</h1></div>
+        {this.state.books.length ? (
+            <div>
+            <h3>Your past trips:</h3>
+            <List>
+              {this.state.books.map(book => {
+                return (
+                  <ListItem key={book._id}>
+                      <span><strong>Where:</strong> {book.title} &nbsp;&nbsp; <strong>When:</strong> {book.author}</span>
+                      <a href={"/dashboard/" + book._id}><button>Update</button></a>
+                    <DeleteBtn onClick={() => this.deleteBook(book._id)} />
+                  </ListItem>
+                );
+              })}
+            </List>
+            </div>
+          ) : (
+              <h3>Share where you've been and get recommendations of where to go next!</h3>
+            )}
+          <button type="button" class="btn btn-outline-primary" onClick={() => this.handleUpdate(true)}><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a recent trip</button>
+          <form>
               <Input
                 value={this.state.title}
                 onChange={this.handleInputChange}
                 name="title"
-                placeholder="Title (required)"
+                placeholder="Where (required)"
               />
               <Input
                 value={this.state.author}
                 onChange={this.handleInputChange}
                 name="author"
                 placeholder="Author (required)"
-              />
-              <TextArea
-                value={this.state.synopsis}
-                onChange={this.handleInputChange}
-                name="synopsis"
-                placeholder="Synopsis (Optional)"
               />
               <FormBtn
                 disabled={!(this.state.author && this.state.title)}
@@ -126,31 +167,15 @@ class Books extends React.Component {
                 Submit Book
               </FormBtn>
             </form>
-          </Col>
-          <Col size="md-6 sm-12">
-            {this.state.books.length ? (
-              <List>
-                {this.state.books.map(book => {
-                  return (
-                    <ListItem key={book._id}>
-                      <a href={"/dashboard/" + book._id}>
-                        <strong>
-                          {book.title} by {book.author}
-                        </strong>
-                      </a>
-                      <DeleteBtn onClick={() => this.deleteBook(book._id)} />
-                    </ListItem>
-                  );
-                })}
-              </List>
-            ) : (
-                <h3>No Results to Display</h3>
-              )}
-          </Col>
-        </Row>
-      </Container>
-    );
+      </div>
+  );
+
+  render() {
+    if (this.state.isUpdate) return this.getUpdateform();
+    else return this.getReadOnly();
   }
 }
+
+  
 
 export default Books;

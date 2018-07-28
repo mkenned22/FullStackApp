@@ -11,7 +11,8 @@ class Detail extends React.Component {
     super(props);
     this.state = {
       book: {},
-      isUpdate: false
+      isUpdate: false,
+      redirectTo: null
     };
   }
   // When this component mounts, grab the book with the _id of this.props.match.params.id
@@ -83,12 +84,6 @@ class Detail extends React.Component {
               name="author"
               placeholder="Author (required)"
             />
-            <TextArea
-              value={this.state.book.synopsis}
-              onChange={this.handleInputChange}
-              name="synopsis"
-              placeholder="Synopsis (Optional)"
-            />
             <button onClick={() => this.handleUpdate(false)}>Cancel</button>
             <FormBtn
               disabled={!(this.state.book.author && this.state.book.title)}
@@ -104,7 +99,7 @@ class Detail extends React.Component {
 
   render() {
     if (this.state.isUpdate) return this.getUpdateform();
-    else return this.getReadOnly();
+    else return this.getUpdateform();
   }
 }
 
