@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios'
-import { Route, Link } from 'react-router-dom'
+import { Route, Link, Redirect } from 'react-router-dom'
 // components
 import Signup from './components/sign-up'
 import LoginForm from './components/login-form'
@@ -74,8 +74,13 @@ class App extends Component {
         />
         <Route
           path="/dashboard"
-          render={() =>
-            <Books/>}
+          render={() => (
+            this.state.loggedIn ? (
+              <Books/>
+            ) : (
+              <Redirect to="/"/>
+            )
+          )}
         />
         <Route exact path="/dashboard/:id" component={Detail} 
         />

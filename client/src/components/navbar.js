@@ -58,7 +58,7 @@ class Navbar extends Component {
                 this.props.updateUser({
                     loggedIn: false,
                     username: null
-                })
+                });
             }
         }).catch(error => {
             console.log('Logout error')
