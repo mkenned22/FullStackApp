@@ -69,8 +69,14 @@ class App extends Component {
         />
         <Route
           path="/signup"
-          render={() =>
-            <Signup/>}
+          render={() => (
+            this.state.loggedIn ? (
+              <Redirect to="/dashboard"/>
+            ) : (
+              <Signup updateUser={this.updateUser}
+              />
+            )
+          )}
         />
         <Route
           path="/dashboard"

@@ -13,19 +13,15 @@ class LoginForm extends Component {
         }
         this.handleSubmit = this.handleSubmit.bind(this)
         this.handleChange = this.handleChange.bind(this)
-
     }
-
     handleChange(event) {
         this.setState({
             [event.target.name]: event.target.value
         })
     }
-
     handleSubmit(event) {
         event.preventDefault()
         console.log('handleSubmit')
-
         axios
             .post('/user/login', {
                 username: this.state.username,
