@@ -88,7 +88,7 @@ class App extends Component {
             )
           )}
         />
-        <Route exact path="/dashboard/:id" component={Detail} 
+        {/* <Route exact path="/dashboard/:id" component={Detail}  */}
         />
       </div>
     );

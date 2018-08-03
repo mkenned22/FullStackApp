@@ -37,13 +37,13 @@ const bookFunctions = {
   }
 }
 
-router.get("/api/dashboard/:id", bookFunctions.findAll)
+router.get("/api/dashboard/trips/:id", bookFunctions.findAll)
 
 router.post("/api/dashboard", bookFunctions.create)
 
 router.delete("/api/dashboard/:id", bookFunctions.remove)
 
-router.get("/api/dashboard/detail/:id", bookFunctions.findById)
+router.get("/api/dashboard/:id", bookFunctions.findById)
 
 router.patch("/api/dashboard/:id", bookFunctions.update)
 

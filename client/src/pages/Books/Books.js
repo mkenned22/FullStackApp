@@ -2,6 +2,7 @@ import React from "react";
 import axios from 'axios';
 import Jumbotron from "../../components/Jumbotron";
 import DeleteBtn from "../../components/DeleteBtn";
+import UpdateBtn from "../../components/UpdateBtn";
 import API from "../../utils/API";
 import { Col, Row, Container } from "../../components/Grid";
 import { List, ListItem } from "../../components/List";
@@ -12,12 +13,14 @@ class Books extends React.Component {
     super(props);
     this.state = {
       books: [],
+      book: {},
       title: "",
       author: "",
       synopsis: "",
       loggedIn: true,
       username: null,
-      isUpdate: false
+      toUpdate: false,
+      toSubmit: false
     };
 
     this.getUser = this.getUser.bind(this)
@@ -31,11 +34,19 @@ class Books extends React.Component {
     //this.loadBooks("mkenned22@gmail.com");
   }
 
-  handleUpdate(isUpdate) {
-    this.setState({ isUpdate: isUpdate })
+  handleUpdate(toUpdate) {
+    this.setState({
+      toUpdate: toUpdate
+    })
   }
 
-  updateUser (userObject) {
+  handleSubmit(toSubmit) {
+    this.setState({
+      toSubmit: toSubmit
+    })
+  }
+
+  updateUser(userObject) {
     this.setState(userObject)
   }
 
@@ -70,6 +81,16 @@ class Books extends React.Component {
       .catch(err => console.log(err));
   };
 
+  getBook = book => {
+    console.log(book)
+    API.getBook(book)
+      .then(res => this.setState({
+        book: res.data,
+        toUpdate: true
+      }))
+      .catch(err => console.log(err));
+  };
+
   // Deletes a book from the database with a given id, then reloads books from the db
   deleteBook = id => {
     API.deleteBook(id)
@@ -78,10 +99,22 @@ class Books extends React.Component {
   };
 
   // Handles updating component state when the user types into the input field
-  handleInputChange = event => {
+  handleSubmitChange = event => {
     const { name, value } = event.target;
     this.setState({
       [name]: value
+    });
+  };
+
+  // Handles updating component state when the user types into the input field
+  handleInputChange = event => {
+    const { name, value } = event.target;
+
+    const updatedBook = { ...this.state.book }
+    updatedBook[name] = value
+
+    this.setState({
+      book: updatedBook
     });
   };
 
@@ -89,7 +122,7 @@ class Books extends React.Component {
   // Then reload books from the database
   handleFormSubmit = event => {
     event.preventDefault();
-    this.handleUpdate(false);
+    this.handleSubmit(false);
     if (this.state.title && this.state.author) {
       API.saveBook({
         title: this.state.title,
@@ -102,82 +135,119 @@ class Books extends React.Component {
     }
   };
 
+  handleFormUpdate = event => {
+    event.preventDefault();
+    this.handleUpdate(false);
+    if (this.state.book.title && this.state.book.author) {
+      API.patchBook(this.state.book._id, this.state.book)
+        .then(res => this.loadBooks(this.state.username))
+        .catch(err => console.log(err));
+    }
+  };
+
+
+
   getReadOnly = () => (
     <div class="container">
-        <div class="row"><h1>Welcome {this.state.username}</h1></div>
-        {this.state.books.length ? (
-            <div>
-            <h3>Your past trips:</h3>
-            <List>
-              {this.state.books.map(book => {
-                return (
-                  <ListItem key={book._id}>
-                      <span><strong>Where:</strong> {book.title} &nbsp;&nbsp; <strong>When:</strong> {book.author}</span>
-                      <a href={"/dashboard/" + book._id}><button>Update</button></a>
-                    <DeleteBtn onClick={() => this.deleteBook(book._id)} />
-                  </ListItem>
-                );
-              })}
-            </List>
-            </div>
-          ) : (
-              <h3>Share where you've been and get recommendations of where to go next!</h3>
-            )}
-          <button type="button" class="btn btn-outline-primary" onClick={() => this.handleUpdate(true)}><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a recent trip</button>
-      </div>
+      <div class="row"><h1>Welcome {this.state.username}</h1></div>
+      {this.state.books.length ? (
+        <div>
+          <h3>Your past trips:</h3>
+          <List>
+            {this.state.books.map(book => {
+              return (
+                <ListItem key={book._id}>
+                  <span><strong>Where:</strong> {book.title} &nbsp;&nbsp; <strong>When:</strong> {book.author}</span>
+                  <UpdateBtn onClick={() => this.getBook(book._id)} />
+                  <DeleteBtn onClick={() => this.deleteBook(book._id)} />
+                </ListItem>
+              );
+            })}
+          </List>
+        </div>
+      ) : (
+          <h3>Share where you've been and get recommendations of where to go next!</h3>
+        )}
+      <button type="button" class="btn btn-outline-primary" onClick={() => this.handleSubmit(true)}><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a recent trip</button>
+    </div>
   );
 
-  getUpdateform = () => (
+  getSubmitForm = () => (
     <div class="container">
-        <div class="row"><h1>Welcome {this.state.username}</h1></div>
-        {this.state.books.length ? (
-            <div>
-            <h3>Your past trips:</h3>
-            <List>
-              {this.state.books.map(book => {
-                return (
-                  <ListItem key={book._id}>
-                      <span><strong>Where:</strong> {book.title} &nbsp;&nbsp; <strong>When:</strong> {book.author}</span>
-                      <a href={"/dashboard/" + book._id}><button>Update</button></a>
-                    <DeleteBtn onClick={() => this.deleteBook(book._id)} />
-                  </ListItem>
-                );
-              })}
-            </List>
-            </div>
-          ) : (
-              <h3>Share where you've been and get recommendations of where to go next!</h3>
-            )}
-          <button type="button" class="btn btn-outline-primary" onClick={() => this.handleUpdate(true)}><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a recent trip</button>
-          <form>
-              <Input
-                value={this.state.title}
-                onChange={this.handleInputChange}
-                name="title"
-                placeholder="Where (required)"
-              />
-              <Input
-                value={this.state.author}
-                onChange={this.handleInputChange}
-                name="author"
-                placeholder="Author (required)"
-              />
-              <FormBtn
-                disabled={!(this.state.author && this.state.title)}
-                onClick={this.handleFormSubmit}
-              >
-                Submit Book
+      <div class="row"><h1>Welcome {this.state.username}</h1></div>
+      {this.state.books.length ? (
+        <div>
+          <h3>Your past trips:</h3>
+          <List>
+            {this.state.books.map(book => {
+              return (
+                <ListItem key={book._id}>
+                  <span><strong>Where:</strong> {book.title} &nbsp;&nbsp; <strong>When:</strong> {book.author}</span>
+                  <UpdateBtn onClick={() => this.getBook(book._id)} />
+                  <DeleteBtn onClick={() => this.deleteBook(book._id)} />
+                </ListItem>
+              );
+            })}
+          </List>
+        </div>
+      ) : (
+          <h3>Share where you've been and get recommendations of where to go next!</h3>
+        )}
+      <button type="button" class="btn btn-outline-primary" onClick={() => this.handleSubmit(true)}><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a recent trip</button>
+      <form>
+        <Input
+          value={this.state.title}
+          onChange={this.handleSubmitChange}
+          name="title"
+          placeholder="Where (required)"
+        />
+        <Input
+          value={this.state.author}
+          onChange={this.handleSubmitChange}
+          name="author"
+          placeholder="Author (required)"
+        />
+        <FormBtn
+          disabled={!(this.state.author && this.state.title)}
+          onClick={this.handleFormSubmit}
+        >
+          Submit Book
               </FormBtn>
-            </form>
-      </div>
+      </form>
+    </div>
+  );
+
+  getUpdateForm = () => (
+<form>
+            <Input
+              value={this.state.book.title}
+              onChange={this.handleInputChange}
+              name="title"
+              placeholder="Title (required)"
+            />
+            <Input
+              value={this.state.book.author}
+              onChange={this.handleInputChange}
+              name="author"
+              placeholder="Author (required)"
+            />
+            <button onClick={() => this.handleUpdate(false)}>Cancel</button>
+            <FormBtn
+              disabled={!(this.state.book.author && this.state.book.title)}
+              onClick={this.handleFormUpdate}
+            >
+              Submit Book
+            </FormBtn>
+          </form>
   );
 
   render() {
-    if (this.state.isUpdate) return this.getUpdateform();
+    if (this.state.toSubmit) return this.getSubmitForm();
+    else if (this.state.toUpdate) return this.getUpdateForm();
     else return this.getReadOnly();
   }
 }
 
-  
+
 
 export default Books;
