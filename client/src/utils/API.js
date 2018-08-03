@@ -2,8 +2,8 @@ import axios from "axios";
 
 export default {
   // Gets all books
-  getBooks: function () {
-    return axios.get("/api/dashboard");
+  getBooks: function (id) {
+    return axios.get("/api/dashboard/" + id);
   },
   // Deletes the book with the given id
   deleteBook: function (id) {
@@ -13,9 +13,9 @@ export default {
   saveBook: function (bookData) {
     return axios.post("/api/dashboard", bookData);
   },
-  // Gets the book with the given id
+  //Gets the book with the given id
   getBook: function (id) {
-    return axios.get("/api/dashboard/" + id);
+    return axios.get("/api/dashboard/detail/" + id);
   },
   patchBook: function (id, bookData) {
     return axios.patch("/api/dashboard/" + id, bookData);

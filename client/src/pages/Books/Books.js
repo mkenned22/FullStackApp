@@ -15,7 +15,7 @@ class Books extends React.Component {
       title: "",
       author: "",
       synopsis: "",
-      loggedIn: false,
+      loggedIn: true,
       username: null,
       isUpdate: false
     };
@@ -28,7 +28,7 @@ class Books extends React.Component {
   // When the component mounts, load all books and save them to this.state.books
   componentDidMount() {
     this.getUser();
-    this.loadBooks();
+    //this.loadBooks("mkenned22@gmail.com");
   }
 
   handleUpdate(isUpdate) {
@@ -50,6 +50,7 @@ class Books extends React.Component {
           loggedIn: true,
           username: response.data.user.username
         })
+        this.loadBooks(response.data.user.username)
       } else {
         console.log('Get user: no user');
         this.setState({
@@ -61,8 +62,8 @@ class Books extends React.Component {
   }
 
   // Loads all books  and sets them to this.state.books
-  loadBooks = () => {
-    API.getBooks()
+  loadBooks = (uid) => {
+    API.getBooks(uid)
       .then(res =>
         this.setState({ books: res.data, title: "", author: "", synopsis: "" })
       )
@@ -72,7 +73,7 @@ class Books extends React.Component {
   // Deletes a book from the database with a given id, then reloads books from the db
   deleteBook = id => {
     API.deleteBook(id)
-      .then(res => this.loadBooks())
+      .then(res => this.loadBooks(this.state.username))
       .catch(err => console.log(err));
   };
 
@@ -93,9 +94,10 @@ class Books extends React.Component {
       API.saveBook({
         title: this.state.title,
         author: this.state.author,
-        synopsis: this.state.synopsis
+        synopsis: this.state.synopsis,
+        uid: this.state.username
       })
-        .then(res => this.loadBooks())
+        .then(res => this.loadBooks(this.state.username))
         .catch(err => console.log(err));
     }
   };

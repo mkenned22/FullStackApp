@@ -5,7 +5,7 @@ const db = require("../models/book");
 const bookFunctions = {
   findAll: function (req, res) {
     db
-      .find(req.query)
+      .find({"uid": req.params.id})
       .sort({ date: -1 })
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
@@ -37,13 +37,13 @@ const bookFunctions = {
   }
 }
 
-router.get("/api/dashboard", bookFunctions.findAll)
+router.get("/api/dashboard/:id", bookFunctions.findAll)
 
 router.post("/api/dashboard", bookFunctions.create)
 
 router.delete("/api/dashboard/:id", bookFunctions.remove)
 
-router.get("/api/dashboard/:id", bookFunctions.findById)
+router.get("/api/dashboard/detail/:id", bookFunctions.findById)
 
 router.patch("/api/dashboard/:id", bookFunctions.update)
 
