@@ -6,7 +6,7 @@ import Signup from './components/sign-up'
 import LoginForm from './components/login-form'
 import Navbar from './components/navbar'
 import Home from './components/home'
-import Books from './pages/Books'
+import Dashboard from './pages/Dashboard'
 
 class App extends Component {
   constructor() {
@@ -80,7 +80,7 @@ class App extends Component {
           path="/dashboard"
           render={() => (
             this.state.loggedIn ? (
-              <Books/>
+              <Dashboard/>
             ) : (
               <Redirect to="/"/>
             )

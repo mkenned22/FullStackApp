@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Redirect, Link } from 'react-router-dom'
 import axios from 'axios'
-import '../pages/Login/Login.css';
+import './Login.css';
 
 class LoginForm extends Component {
     constructor() {

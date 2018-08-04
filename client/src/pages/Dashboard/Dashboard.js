@@ -8,7 +8,7 @@ import { Col, Row, Container } from "../../components/Grid";
 import { List, ListItem } from "../../components/List";
 import { Input, TextArea, FormBtn } from "../../components/Form";
 
-class Books extends React.Component {
+class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -250,4 +250,4 @@ class Books extends React.Component {
 
 
 
-export default Books;
+export default Dashboard;
