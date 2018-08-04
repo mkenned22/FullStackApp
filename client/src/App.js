@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import axios from 'axios'
-import { Route, Link, Redirect } from 'react-router-dom'
+import { Route, Redirect } from 'react-router-dom'
 // components
 import Signup from './components/sign-up'
 import LoginForm from './components/login-form'
 import Navbar from './components/navbar'
 import Home from './components/home'
 import Books from './pages/Books'
-import Detail from './pages/Detail'
-//import Login from './pages/Login'
 
 class App extends Component {
   constructor() {
@@ -88,7 +86,6 @@ class App extends Component {
             )
           )}
         />
-        {/* <Route exact path="/dashboard/:id" component={Detail}  */}
         />
       </div>
     );
