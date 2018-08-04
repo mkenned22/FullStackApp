@@ -15,7 +15,8 @@ class Dashboard extends React.Component {
       trips: [],
       trip: {},
       where: "",
-      when: "",
+      to: "",
+      from: "",
       tripNotes: "",
       currDate: new Date().toISOString(),
       loggedIn: true,
@@ -149,64 +150,88 @@ class Dashboard extends React.Component {
 
   getReadOnly = () => (
     <div class="container">
-    <div class="row">
-      <div class="col-md-6">
-      <h3>Your Travel Blog:</h3>
-        {this.state.trips.length ? (
-          <div>
-            <List>
-              {this.state.trips.map(trip => {
-                return (
-                  <ListItem key={trip._id}>
-                    <span><strong>Where:</strong> {trip.where} &nbsp;&nbsp; <strong>When:</strong> {trip.when}</span>
-                    <UpdateBtn onClick={() => this.getTrip(trip._id)} />
-                    <DeleteBtn onClick={() => this.deleteTrip(trip._id)} />
-                  </ListItem>
-                );
-              })}
-            </List>
-          </div>
-        ) : (
-            <h5>Share where you've been and get we can help with recommendations of where to go next!</h5>
-          )}
-      </div>
-      <div class="col-md-6">
-        <h3>Just Got Back?</h3>
-        <h5>Tell us about your most recent trip!</h5>
-        {/* <button type="button" class="btn btn-outline-primary" onClick={() => this.handleSubmit(true)}><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a recent trip</button> */}
-        <form>
-          <Input
-            icon="glyphicon glyphicon-map-marker"
-            value={this.state.where}
-            onChange={this.handleSubmitChange}
-            name="where"
-            placeholder="Where (required)"
-          />
-          <Input
-            value={this.state.when}
-            onChange={this.handleSubmitChange}
-            name="when"
-            placeholder="When (required)"
-          />
-           {/* <div class="form-group">
-                <div class='input-group date' id='datetimepicker1'>
-                    <input type='text' class="form-control" />
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
+      <div class="row">
+        <div class="col-md-6">
+          <h3>Your Travel Blog:</h3>
+          {this.state.trips.length ? (
+            <div>
+              <List>
+                {this.state.trips.map(trip => {
+                  return (
+                    <ListItem key={trip._id}>
+                      <span><strong>Where:</strong> {trip.where} &nbsp;&nbsp; <strong>When:</strong> {trip.when}</span>
+                      <UpdateBtn onClick={() => this.getTrip(trip._id)} />
+                      <DeleteBtn onClick={() => this.deleteTrip(trip._id)} />
+                    </ListItem>
+                  );
+                })}
+              </List>
             </div>
-          <DatePicker /> */}
-          <FormBtn
-            disabled={!(this.state.when && this.state.where)}
-            onClick={this.handleFormSubmit}
-          >
-            Submit
+          ) : (
+              <h5>Share where you've been and get we can help with recommendations of where to go next!</h5>
+            )}
+        </div>
+        <div class="col-md-6">
+          <h3>Just Got Back?</h3>
+          <h5>Tell us about your most recent trip!</h5>
+          {/* <button type="button" class="btn btn-outline-primary" onClick={() => this.handleSubmit(true)}><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a recent trip</button> */}
+          <form>
+            <div class="row">
+              <Input
+                value={this.state.where}
+                onChange={this.handleSubmitChange}
+                icon="glyphicon glyphicon-map-marker"
+                type="text"
+                name="where"
+                placeholder="Where (required)"
+              />
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+              <span>From</span>
+                <Input
+                  icon="glyphicon glyphicon-calendar"
+                  value={this.state.from}
+                  onChange={this.handleSubmitChange}
+                  type="date"
+                  name="from"
+                  placeholder="From"
+                />
+              </div>
+              <div class="col-md-6">
+              <span>To</span>
+                <Input
+                  icon="glyphicon glyphicon-calendar"
+                  value={this.state.to}
+                  onChange={this.handleSubmitChange}
+                  type="date"
+                  name="from"
+                  placeholder="To"
+                />
+            </div>
+            </div>
+            <div class="row">
+              <Input
+                value={this.state.where}
+                onChange={this.handleSubmitChange}
+                icon="glyphicon glyphicon-map-marker"
+                type="text"
+                name="where"
+                placeholder="Where (required)"
+              />
+            </div>
+            <div>
+              <FormBtn
+                disabled={!(this.state.when && this.state.where)}
+                onClick={this.handleFormSubmit}
+              >
+                Submit
             </FormBtn>
-        </form>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
     // <div class="container">
     //   <div class="row"><h1>Welcome {this.state.username}</h1></div>
     //   {this.state.trips.length ? (
@@ -271,7 +296,7 @@ class Dashboard extends React.Component {
               name="when"
               placeholder="When (required)"
             />
-           
+
             <FormBtn
               disabled={!(this.state.when && this.state.where)}
               onClick={this.handleFormSubmit}
@@ -292,7 +317,7 @@ class Dashboard extends React.Component {
         name="where"
         placeholder="Where (required)"
       />
-      
+
       <Input
         value={this.state.trip.when}
         type="date"
@@ -300,7 +325,7 @@ class Dashboard extends React.Component {
         name="when"
         placeholder="When (required)"
       />
-      
+
       <button onClick={() => this.handleUpdate(false)}>Cancel</button>
       <FormBtn
         disabled={!(this.state.trip.when && this.state.trip.where)}
@@ -308,7 +333,7 @@ class Dashboard extends React.Component {
       >
         Submit Trip
             </FormBtn>
-           
+
     </form>
   );
 
