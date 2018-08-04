@@ -1,6 +1,6 @@
 import React from "react";
 import axios from 'axios';
-import Jumbotron from "../../components/Jumbotron";
+//import DatePicker from "../../components/DatePicker";
 import DeleteBtn from "../../components/DeleteBtn";
 import UpdateBtn from "../../components/UpdateBtn";
 import API from "../../utils/API";
@@ -17,6 +17,7 @@ class Dashboard extends React.Component {
       where: "",
       when: "",
       tripNotes: "",
+      currDate: new Date().toISOString(),
       loggedIn: true,
       username: null,
       toUpdate: false,
@@ -148,96 +149,167 @@ class Dashboard extends React.Component {
 
   getReadOnly = () => (
     <div class="container">
-      <div class="row"><h1>Welcome {this.state.username}</h1></div>
-      {this.state.trips.length ? (
-        <div>
-          <h3>Your past trips:</h3>
-          <List>
-            {this.state.trips.map(trip => {
-              return (
-                <ListItem key={trip._id}>
-                  <span><strong>Where:</strong> {trip.where} &nbsp;&nbsp; <strong>When:</strong> {trip.when}</span>
-                  <UpdateBtn onClick={() => this.getTrip(trip._id)} />
-                  <DeleteBtn onClick={() => this.deleteTrip(trip._id)} />
-                </ListItem>
-              );
-            })}
-          </List>
-        </div>
-      ) : (
-          <h3>Share where you've been and get recommendations of where to go next!</h3>
-        )}
-      <button type="button" class="btn btn-outline-primary" onClick={() => this.handleSubmit(true)}><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a recent trip</button>
+    <div class="row">
+      <div class="col-md-6">
+      <h3>Your Travel Blog:</h3>
+        {this.state.trips.length ? (
+          <div>
+            <List>
+              {this.state.trips.map(trip => {
+                return (
+                  <ListItem key={trip._id}>
+                    <span><strong>Where:</strong> {trip.where} &nbsp;&nbsp; <strong>When:</strong> {trip.when}</span>
+                    <UpdateBtn onClick={() => this.getTrip(trip._id)} />
+                    <DeleteBtn onClick={() => this.deleteTrip(trip._id)} />
+                  </ListItem>
+                );
+              })}
+            </List>
+          </div>
+        ) : (
+            <h5>Share where you've been and get we can help with recommendations of where to go next!</h5>
+          )}
+      </div>
+      <div class="col-md-6">
+        <h3>Just Got Back?</h3>
+        <h5>Tell us about your most recent trip!</h5>
+        {/* <button type="button" class="btn btn-outline-primary" onClick={() => this.handleSubmit(true)}><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a recent trip</button> */}
+        <form>
+          <Input
+            icon="glyphicon glyphicon-map-marker"
+            value={this.state.where}
+            onChange={this.handleSubmitChange}
+            name="where"
+            placeholder="Where (required)"
+          />
+          <Input
+            value={this.state.when}
+            onChange={this.handleSubmitChange}
+            name="when"
+            placeholder="When (required)"
+          />
+           {/* <div class="form-group">
+                <div class='input-group date' id='datetimepicker1'>
+                    <input type='text' class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+          <DatePicker /> */}
+          <FormBtn
+            disabled={!(this.state.when && this.state.where)}
+            onClick={this.handleFormSubmit}
+          >
+            Submit
+            </FormBtn>
+        </form>
+      </div>
     </div>
+  </div>
+    // <div class="container">
+    //   <div class="row"><h1>Welcome {this.state.username}</h1></div>
+    //   {this.state.trips.length ? (
+    //     <div>
+    //       <h3>Your past trips:</h3>
+    //       <List>
+    //         {this.state.trips.map(trip => {
+    //           return (
+    //             <ListItem key={trip._id}>
+    //               <span><strong>Where:</strong> {trip.where} &nbsp;&nbsp; <strong>When:</strong> {trip.when}</span>
+    //               <UpdateBtn onClick={() => this.getTrip(trip._id)} />
+    //               <DeleteBtn onClick={() => this.deleteTrip(trip._id)} />
+    //             </ListItem>
+    //           );
+    //         })}
+    //       </List>
+    //     </div>
+    //   ) : (
+    //       <h3>Share where you've been and get recommendations of where to go next!</h3>
+    //     )}
+    //   <button type="button" class="btn btn-outline-primary" onClick={() => this.handleSubmit(true)}><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a recent trip</button>
+    // </div>
   );
 
   getSubmitForm = () => (
     <div class="container">
-      <div class="row"><h1>Welcome {this.state.username}</h1></div>
-      {this.state.trips.length ? (
-        <div>
-          <h3>Your past trips:</h3>
-          <List>
-            {this.state.trips.map(trip => {
-              return (
-                <ListItem key={trip._id}>
-                  <span><strong>Where:</strong> {trip.where} &nbsp;&nbsp; <strong>When:</strong> {trip.when}</span>
-                  <UpdateBtn onClick={() => this.getTrip(trip._id)} />
-                  <DeleteBtn onClick={() => this.deleteTrip(trip._id)} />
-                </ListItem>
-              );
-            })}
-          </List>
+      <div class="row">
+        <div class="col-md-6">
+          {this.state.trips.length ? (
+            <div>
+              <h3>Your Travel Blog:</h3>
+              <List>
+                {this.state.trips.map(trip => {
+                  return (
+                    <ListItem key={trip._id}>
+                      <span><strong>Where:</strong> {trip.where} &nbsp;&nbsp; <strong>When:</strong> {trip.when}</span>
+                      <UpdateBtn onClick={() => this.getTrip(trip._id)} />
+                      <DeleteBtn onClick={() => this.deleteTrip(trip._id)} />
+                    </ListItem>
+                  );
+                })}
+              </List>
+            </div>
+          ) : (
+              <h5>Share where you've been and get we can help with recommendations of where to go next!</h5>
+            )}
         </div>
-      ) : (
-          <h3>Share where you've been and get recommendations of where to go next!</h3>
-        )}
-      <button type="button" class="btn btn-outline-primary" onClick={() => this.handleSubmit(true)}><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a recent trip</button>
-      <form>
-        <Input
-          value={this.state.where}
-          onChange={this.handleSubmitChange}
-          name="where"
-          placeholder="Where (required)"
-        />
-        <Input
-          value={this.state.when}
-          onChange={this.handleSubmitChange}
-          name="when"
-          placeholder="When (required)"
-        />
-        <FormBtn
-          disabled={!(this.state.when && this.state.where)}
-          onClick={this.handleFormSubmit}
-        >
-          Submit Trip
-              </FormBtn>
-      </form>
-    </div>
-  );
-
-  getUpdateForm = () => (
-<form>
+        <div class="col-md-6">
+          <h3>Just Got Back?</h3>
+          <h5>Tell us about your most recent trip!</h5>
+          {/* <button type="button" class="btn btn-outline-primary" onClick={() => this.handleSubmit(true)}><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a recent trip</button> */}
+          <form>
             <Input
-              value={this.state.trip.where}
-              onChange={this.handleInputChange}
+              value={this.state.where}
+              onChange={this.handleSubmitChange}
               name="where"
               placeholder="Where (required)"
             />
             <Input
-              value={this.state.trip.when}
-              onChange={this.handleInputChange}
+              value={this.state.when}
+              onChange={this.handleSubmitChange}
               name="when"
               placeholder="When (required)"
             />
-            <button onClick={() => this.handleUpdate(false)}>Cancel</button>
+           
             <FormBtn
-              disabled={!(this.state.trip.when && this.state.trip.where)}
-              onClick={this.handleFormUpdate}
+              disabled={!(this.state.when && this.state.where)}
+              onClick={this.handleFormSubmit}
             >
-              Submit Trip
-            </FormBtn>
+              Submit
+              </FormBtn>
           </form>
+        </div>
+      </div>
+    </div>
+  );
+
+  getUpdateForm = () => (
+    <form>
+      <Input
+        value={this.state.trip.where}
+        onChange={this.handleInputChange}
+        name="where"
+        placeholder="Where (required)"
+      />
+      
+      <Input
+        value={this.state.trip.when}
+        type="date"
+        onChange={this.handleInputChange}
+        name="when"
+        placeholder="When (required)"
+      />
+      
+      <button onClick={() => this.handleUpdate(false)}>Cancel</button>
+      <FormBtn
+        disabled={!(this.state.trip.when && this.state.trip.where)}
+        onClick={this.handleFormUpdate}
+      >
+        Submit Trip
+            </FormBtn>
+           
+    </form>
   );
 
   render() {

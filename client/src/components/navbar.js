@@ -67,6 +67,7 @@ class Navbar extends Component {
 
     render() {
         const loggedIn = this.props.loggedIn;
+        const username = this.props.username;
         console.log('navbar render, props: ')
         console.log(this.props);
 
@@ -74,7 +75,13 @@ class Navbar extends Component {
             <header>
                 <nav class="navbar navbar-default" style={navStyle}>
                     <a class="navbar-brand" style={navbarbrandStyle} href="/">
-                        <span id="logo-font" style={logofontStyle}><img id="logo" style={logoStyle} src={SP} />&nbsp;&nbsp;SafePassage</span>
+                        <span id="logo-font" style={logofontStyle}><img id="logo" style={logoStyle} src={SP} />
+                        {loggedIn ? (
+                            <span>&nbsp;&nbsp;Welcome {this.props.username}</span>
+                        ):(
+                            <span>&nbsp;&nbsp;SafePassage</span>
+                        )}
+                        </span>
                     </a>
                     {loggedIn ? (
                         <div class="dropdown-container" style={dropdowncontainerStyle}>
