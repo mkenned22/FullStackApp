@@ -12,11 +12,11 @@ class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      books: [],
-      book: {},
-      title: "",
-      author: "",
-      synopsis: "",
+      trips: [],
+      trip: {},
+      where: "",
+      when: "",
+      tripNotes: "",
       loggedIn: true,
       username: null,
       toUpdate: false,
@@ -28,10 +28,9 @@ class Dashboard extends React.Component {
     this.updateUser = this.updateUser.bind(this)
   }
 
-  // When the component mounts, load all books and save them to this.state.books
+  // When the component mounts, load all trips and save them to this.state.trips
   componentDidMount() {
     this.getUser();
-    //this.loadBooks("mkenned22@gmail.com");
   }
 
   handleUpdate(toUpdate) {
@@ -61,7 +60,7 @@ class Dashboard extends React.Component {
           loggedIn: true,
           username: response.data.user.username
         })
-        this.loadBooks(response.data.user.username)
+        this.loadTrips(response.data.user.username)
       } else {
         console.log('Get user: no user');
         this.setState({
@@ -72,29 +71,29 @@ class Dashboard extends React.Component {
     })
   }
 
-  // Loads all books  and sets them to this.state.books
-  loadBooks = (uid) => {
-    API.getBooks(uid)
+  // Loads all trips  and sets them to this.state.trips
+  loadTrips = (uid) => {
+    API.getTrips(uid)
       .then(res =>
-        this.setState({ books: res.data, title: "", author: "", synopsis: "" })
+        this.setState({ trips: res.data, where: "", when: "", tripNotes: "" })
       )
       .catch(err => console.log(err));
   };
 
-  getBook = book => {
-    console.log(book)
-    API.getBook(book)
+  getTrip = trip => {
+    console.log(trip)
+    API.getTrip(trip)
       .then(res => this.setState({
-        book: res.data,
+        trip: res.data,
         toUpdate: true
       }))
       .catch(err => console.log(err));
   };
 
-  // Deletes a book from the database with a given id, then reloads books from the db
-  deleteBook = id => {
-    API.deleteBook(id)
-      .then(res => this.loadBooks(this.state.username))
+  // Deletes a trip from the database with a given id, then reloads trips from the db
+  deleteTrip = id => {
+    API.deleteTrip(id)
+      .then(res => this.loadTrips(this.state.username))
       .catch(err => console.log(err));
   };
 
@@ -110,27 +109,27 @@ class Dashboard extends React.Component {
   handleInputChange = event => {
     const { name, value } = event.target;
 
-    const updatedBook = { ...this.state.book }
-    updatedBook[name] = value
+    const updatedTrip = { ...this.state.trip }
+    updatedTrip[name] = value
 
     this.setState({
-      book: updatedBook
+      trip: updatedTrip
     });
   };
 
-  // When the form is submitted, use the API.saveBook method to save the book data
-  // Then reload books from the database
+  // When the form is submitted, use the API.saveTrip method to save the trip data
+  // Then reload trips from the database
   handleFormSubmit = event => {
     event.preventDefault();
     this.handleSubmit(false);
-    if (this.state.title && this.state.author) {
-      API.saveBook({
-        title: this.state.title,
-        author: this.state.author,
-        synopsis: this.state.synopsis,
+    if (this.state.where && this.state.when) {
+      API.saveTrip({
+        where: this.state.where,
+        when: this.state.when,
+        tripNotes: this.state.tripNotes,
         uid: this.state.username
       })
-        .then(res => this.loadBooks(this.state.username))
+        .then(res => this.loadTrips(this.state.username))
         .catch(err => console.log(err));
     }
   };
@@ -138,9 +137,9 @@ class Dashboard extends React.Component {
   handleFormUpdate = event => {
     event.preventDefault();
     this.handleUpdate(false);
-    if (this.state.book.title && this.state.book.author) {
-      API.patchBook(this.state.book._id, this.state.book)
-        .then(res => this.loadBooks(this.state.username))
+    if (this.state.trip.where && this.state.trip.when) {
+      API.patchTrip(this.state.trip._id, this.state.trip)
+        .then(res => this.loadTrips(this.state.username))
         .catch(err => console.log(err));
     }
   };
@@ -150,16 +149,16 @@ class Dashboard extends React.Component {
   getReadOnly = () => (
     <div class="container">
       <div class="row"><h1>Welcome {this.state.username}</h1></div>
-      {this.state.books.length ? (
+      {this.state.trips.length ? (
         <div>
           <h3>Your past trips:</h3>
           <List>
-            {this.state.books.map(book => {
+            {this.state.trips.map(trip => {
               return (
-                <ListItem key={book._id}>
-                  <span><strong>Where:</strong> {book.title} &nbsp;&nbsp; <strong>When:</strong> {book.author}</span>
-                  <UpdateBtn onClick={() => this.getBook(book._id)} />
-                  <DeleteBtn onClick={() => this.deleteBook(book._id)} />
+                <ListItem key={trip._id}>
+                  <span><strong>Where:</strong> {trip.where} &nbsp;&nbsp; <strong>When:</strong> {trip.when}</span>
+                  <UpdateBtn onClick={() => this.getTrip(trip._id)} />
+                  <DeleteBtn onClick={() => this.deleteTrip(trip._id)} />
                 </ListItem>
               );
             })}
@@ -175,16 +174,16 @@ class Dashboard extends React.Component {
   getSubmitForm = () => (
     <div class="container">
       <div class="row"><h1>Welcome {this.state.username}</h1></div>
-      {this.state.books.length ? (
+      {this.state.trips.length ? (
         <div>
           <h3>Your past trips:</h3>
           <List>
-            {this.state.books.map(book => {
+            {this.state.trips.map(trip => {
               return (
-                <ListItem key={book._id}>
-                  <span><strong>Where:</strong> {book.title} &nbsp;&nbsp; <strong>When:</strong> {book.author}</span>
-                  <UpdateBtn onClick={() => this.getBook(book._id)} />
-                  <DeleteBtn onClick={() => this.deleteBook(book._id)} />
+                <ListItem key={trip._id}>
+                  <span><strong>Where:</strong> {trip.where} &nbsp;&nbsp; <strong>When:</strong> {trip.when}</span>
+                  <UpdateBtn onClick={() => this.getTrip(trip._id)} />
+                  <DeleteBtn onClick={() => this.deleteTrip(trip._id)} />
                 </ListItem>
               );
             })}
@@ -196,22 +195,22 @@ class Dashboard extends React.Component {
       <button type="button" class="btn btn-outline-primary" onClick={() => this.handleSubmit(true)}><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a recent trip</button>
       <form>
         <Input
-          value={this.state.title}
+          value={this.state.where}
           onChange={this.handleSubmitChange}
-          name="title"
+          name="where"
           placeholder="Where (required)"
         />
         <Input
-          value={this.state.author}
+          value={this.state.when}
           onChange={this.handleSubmitChange}
-          name="author"
-          placeholder="Author (required)"
+          name="when"
+          placeholder="When (required)"
         />
         <FormBtn
-          disabled={!(this.state.author && this.state.title)}
+          disabled={!(this.state.when && this.state.where)}
           onClick={this.handleFormSubmit}
         >
-          Submit Book
+          Submit Trip
               </FormBtn>
       </form>
     </div>
@@ -220,23 +219,23 @@ class Dashboard extends React.Component {
   getUpdateForm = () => (
 <form>
             <Input
-              value={this.state.book.title}
+              value={this.state.trip.where}
               onChange={this.handleInputChange}
-              name="title"
-              placeholder="Title (required)"
+              name="where"
+              placeholder="Where (required)"
             />
             <Input
-              value={this.state.book.author}
+              value={this.state.trip.when}
               onChange={this.handleInputChange}
-              name="author"
-              placeholder="Author (required)"
+              name="when"
+              placeholder="When (required)"
             />
             <button onClick={() => this.handleUpdate(false)}>Cancel</button>
             <FormBtn
-              disabled={!(this.state.book.author && this.state.book.title)}
+              disabled={!(this.state.trip.when && this.state.trip.where)}
               onClick={this.handleFormUpdate}
             >
-              Submit Book
+              Submit Trip
             </FormBtn>
           </form>
   );

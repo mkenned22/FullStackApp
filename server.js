@@ -34,7 +34,6 @@ app.use(
 app.use(passport.initialize())
 app.use(passport.session()) // calls the deserializeUser
 
-
 // Routes
 app.use('/user', user)
 app.use(trip)

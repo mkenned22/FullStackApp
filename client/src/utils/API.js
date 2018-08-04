@@ -2,22 +2,22 @@ import axios from "axios";
 
 export default {
   // Gets all books
-  getBooks: function (id) {
+  getTrips: function (id) {
     return axios.get("/api/dashboard/trips/" + id);
   },
   // Deletes the book with the given id
-  deleteBook: function (id) {
+  deleteTrip: function (id) {
     return axios.delete("/api/dashboard/" + id);
   },
   // Saves a book to the database
-  saveBook: function (bookData) {
-    return axios.post("/api/dashboard", bookData);
+  saveTrip: function (tripData) {
+    return axios.post("/api/dashboard", tripData);
   },
   //Gets the book with the given id
-  getBook: function (id) {
+  getTrip: function (id) {
     return axios.get("/api/dashboard/" + id);
   },
-  patchBook: function (id, bookData) {
-    return axios.patch("/api/dashboard/" + id, bookData);
+  patchTrip: function (id, tripData) {
+    return axios.patch("/api/dashboard/" + id, tripData);
   },
 };
