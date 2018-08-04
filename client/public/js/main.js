@@ -1,1 +1,0 @@
-$('#datetimepicker1').datetimepicker();
