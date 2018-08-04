@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 mongoose.promise = Promise
 
-const bookSchema = new Schema({
+const tripSchema = new Schema({
   title: { type: String, required: true },
   author: { type: String, required: true },
   synopsis: String,
@@ -10,6 +10,6 @@ const bookSchema = new Schema({
   uid: { type: String, required: true }
 });
 
-const Book = mongoose.model("Book", bookSchema);
+const Trip = mongoose.model("Trip", tripSchema);
 
-module.exports = Book;
+module.exports = Trip;
