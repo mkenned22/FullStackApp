@@ -4,8 +4,13 @@ mongoose.promise = Promise
 
 const tripSchema = new Schema({
   where: { type: String, required: true },
-  when: { type: String, required: true },
-  tripNotes: {type: String},
+  from: { type: String, required: true },
+  to: {type: String, required: true},
+  cost: {type: String, required: true},
+  people: {type: String, required: true},
+  highlights: {type: String, required: true},
+  changes: {type: String, required: true},
+  //stars: {type: String, required: true},
   uid: { type: String, required: true }
 });
 

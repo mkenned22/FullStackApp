@@ -7,6 +7,7 @@ import API from "../../utils/API";
 import { Col, Row, Container } from "../../components/Grid";
 import { List, ListItem } from "../../components/List";
 import { Input, TextArea, FormBtn } from "../../components/Form";
+import './style.css'
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -17,8 +18,11 @@ class Dashboard extends React.Component {
       where: "",
       to: "",
       from: "",
-      tripNotes: "",
-      currDate: new Date().toISOString(),
+      cost: "",
+      rating: "",
+      people: "",
+      highlights: "",
+      changes: "",
       loggedIn: true,
       username: null,
       toUpdate: false,
@@ -77,7 +81,17 @@ class Dashboard extends React.Component {
   loadTrips = (uid) => {
     API.getTrips(uid)
       .then(res =>
-        this.setState({ trips: res.data, where: "", when: "", tripNotes: "" })
+        this.setState({ 
+          trips: res.data, 
+          where: "", 
+          to: "",
+          from: "",
+          cost: "",
+          rating: "",
+          people: "",
+          highlights: "",
+          changes: ""
+        })
       )
       .catch(err => console.log(err));
   };
@@ -124,11 +138,15 @@ class Dashboard extends React.Component {
   handleFormSubmit = event => {
     event.preventDefault();
     this.handleSubmit(false);
-    if (this.state.where && this.state.when) {
+    if (this.state.where && this.state.from && this.state.to && this.state.cost && this.state.people && this.state.highlights && this.state.changes) {
       API.saveTrip({
         where: this.state.where,
-        when: this.state.when,
-        tripNotes: this.state.tripNotes,
+        from: this.state.from,
+        to: this.state.to,
+        cost: this.state.cost,
+        people: this.state.people,
+        highlights: this.state.highlights,
+        changes: this.state.changes,
         uid: this.state.username
       })
         .then(res => this.loadTrips(this.state.username))
@@ -149,17 +167,25 @@ class Dashboard extends React.Component {
 
 
   getReadOnly = () => (
-    <div class="container">
+    <div class="container greyBackground">
       <div class="row">
         <div class="col-md-6">
-          <h3>Your Travel Blog:</h3>
+          <h3>Your Travel Blog</h3>
           {this.state.trips.length ? (
             <div>
               <List>
                 {this.state.trips.map(trip => {
                   return (
                     <ListItem key={trip._id}>
-                      <span><strong>Where:</strong> {trip.where} &nbsp;&nbsp; <strong>When:</strong> {trip.when}</span>
+                      <span>
+                        <strong>Where:</strong> {trip.where}<br />
+                        <strong>From:</strong> {trip.from}<br />
+                        <strong>To:</strong> {trip.to}<br />
+                        <strong>Cost:</strong> ${trip.cost}<br />
+                        <strong>People:</strong> {trip.people}<br />
+                        <strong>Highlights:</strong> {trip.highlights}<br />
+                        <strong>This to do differently:</strong> {trip.changes}<br />
+                      </span>
                       <UpdateBtn onClick={() => this.getTrip(trip._id)} />
                       <DeleteBtn onClick={() => this.deleteTrip(trip._id)} />
                     </ListItem>
@@ -176,19 +202,22 @@ class Dashboard extends React.Component {
           <h5>Tell us about your most recent trip!</h5>
           {/* <button type="button" class="btn btn-outline-primary" onClick={() => this.handleSubmit(true)}><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a recent trip</button> */}
           <form>
-            <div class="row">
-              <Input
-                value={this.state.where}
-                onChange={this.handleSubmitChange}
-                icon="glyphicon glyphicon-map-marker"
-                type="text"
-                name="where"
-                placeholder="Where (required)"
-              />
+            <div class="row formMargin">
+              <div class="col-md-12">
+                <span>Where</span>
+                <Input
+                  value={this.state.where}
+                  onChange={this.handleSubmitChange}
+                  icon="glyphicon glyphicon-map-marker"
+                  type="text"
+                  name="where"
+                  placeholder="Somewhere Awesome"
+                />
+              </div>
             </div>
-            <div class="row">
+            <div class="row formMargin">
               <div class="col-md-6">
-              <span>From</span>
+                <span>From</span>
                 <Input
                   icon="glyphicon glyphicon-calendar"
                   value={this.state.from}
@@ -199,30 +228,109 @@ class Dashboard extends React.Component {
                 />
               </div>
               <div class="col-md-6">
-              <span>To</span>
+                <span>To</span>
                 <Input
                   icon="glyphicon glyphicon-calendar"
                   value={this.state.to}
                   onChange={this.handleSubmitChange}
                   type="date"
-                  name="from"
+                  name="to"
                   placeholder="To"
                 />
+              </div>
+            </div>
+            <div class="row formMargin">
+              <div class="col-md-12">
+                <span>Approximate Cost</span>
+                <Input
+                  value={this.state.cost}
+                  onChange={this.handleSubmitChange}
+                  icon="glyphicon glyphicon-usd"
+                  type="number"
+                  name="cost"
+                  placeholder="Hopefully not a lot"
+                />
+              </div>
+            </div>
+            <div class="row formMargin">
+              <div class="col-md-12">
+                <span>How many people did you go with?</span>
+                <Input
+                  value={this.state.people}
+                  onChange={this.handleSubmitChange}
+                  icon="glyphicon glyphicon-user"
+                  type="number"
+                  name="people"
+                  placeholder="Solo or with Friends"
+                />
+              </div>
+            </div>
+            <div class="row formMargin">
+              <div class="col-md-12">
+                <span>Some Highlights</span>
+                <Input
+                  value={this.state.highlights}
+                  onChange={this.handleSubmitChange}
+                  icon="glyphicon glyphicon-thumbs-up"
+                  type="textarea"
+                  name="highlights"
+                  placeholder="Activities, Dining, Accomodations, etc."
+                />
+              </div>
+            </div>
+            <div class="row formMargin">
+              <div class="col-md-12">
+                <span>Things to do differently next time</span>
+                <Input
+                  value={this.state.changes}
+                  onChange={this.handleSubmitChange}
+                  icon="glyphicon glyphicon-thumbs-down"
+                  type="textarea"
+                  name="changes"
+                  placeholder="Activities, Dining, Accomodations, etc."
+                />
+              </div>
+            </div>
+            {/* <div class="row formMargin">
+            <div class="col-md-12">
+            <p>Overall Rating</p>
+            <div class="row rating formMargin">
+              <label>
+                <input type="radio" name="stars" value="1" />
+                <span class="icon">★</span>
+              </label>
+              <label>
+                <input type="radio" name="stars" value="2" />
+                <span class="icon">★</span>
+                <span class="icon">★</span>
+              </label>
+              <label>
+                <input type="radio" name="stars" value="3" />
+                <span class="icon">★</span>
+                <span class="icon">★</span>
+                <span class="icon">★</span>
+              </label>
+              <label>
+                <input type="radio" name="stars" value="4" />
+                <span class="icon">★</span>
+                <span class="icon">★</span>
+                <span class="icon">★</span>
+                <span class="icon">★</span>
+              </label>
+              <label>
+                <input type="radio" name="stars" value="5" />
+                <span class="icon">★</span>
+                <span class="icon">★</span>
+                <span class="icon">★</span>
+                <span class="icon">★</span>
+                <span class="icon">★</span>
+              </label>
             </div>
             </div>
-            <div class="row">
-              <Input
-                value={this.state.where}
-                onChange={this.handleSubmitChange}
-                icon="glyphicon glyphicon-map-marker"
-                type="text"
-                name="where"
-                placeholder="Where (required)"
-              />
-            </div>
+            </div> */}
             <div>
               <FormBtn
-                disabled={!(this.state.when && this.state.where)}
+                //disabled={!(this.state.where && this.state.to)}
                 onClick={this.handleFormSubmit}
               >
                 Submit
@@ -311,29 +419,110 @@ class Dashboard extends React.Component {
 
   getUpdateForm = () => (
     <form>
-      <Input
-        value={this.state.trip.where}
-        onChange={this.handleInputChange}
-        name="where"
-        placeholder="Where (required)"
-      />
-
-      <Input
-        value={this.state.trip.when}
-        type="date"
-        onChange={this.handleInputChange}
-        name="when"
-        placeholder="When (required)"
-      />
-
+      <div class="container greyBackground">
+      <div class="row formMargin">
+        <div class="col-md-12">
+          <h3>Update Trip Detail</h3>
+        </div>
+      </div>
+        <div class="row formMargin">
+          <div class="col-md-12">
+            <span>Where</span>
+            <Input
+              value={this.state.trip.where}
+              onChange={this.handleInputChange}
+              icon="glyphicon glyphicon-map-marker"
+              type="text"
+              name="where"
+              placeholder="Somewhere Awesome"
+            />
+          </div>
+        </div>
+        <div class="row formMargin">
+          <div class="col-md-6">
+            <span>From</span>
+            <Input
+              icon="glyphicon glyphicon-calendar"
+              value={this.state.trip.from}
+              onChange={this.handleInputChange}
+              type="date"
+              name="from"
+              placeholder="From"
+            />
+          </div>
+          <div class="col-md-6">
+            <span>To</span>
+            <Input
+              icon="glyphicon glyphicon-calendar"
+              value={this.state.trip.to}
+              onChange={this.handleInputChange}
+              type="date"
+              name="to"
+              placeholder="To"
+            />
+          </div>
+        </div>
+        <div class="row formMargin">
+          <div class="col-md-12">
+            <span>Approximate Cost</span>
+            <Input
+              value={this.state.trip.cost}
+              onChange={this.handleInputChange}
+              icon="glyphicon glyphicon-usd"
+              type="number"
+              name="cost"
+              placeholder="Hopefully not a lot"
+            />
+          </div>
+        </div>
+        <div class="row formMargin">
+          <div class="col-md-12">
+            <span>How many people did you go with?</span>
+            <Input
+              value={this.state.trip.people}
+              onChange={this.handleInputChange}
+              icon="glyphicon glyphicon-user"
+              type="number"
+              name="people"
+              placeholder="Solo or with Friends"
+            />
+          </div>
+        </div>
+        <div class="row formMargin">
+          <div class="col-md-12">
+            <span>Some Highlights</span>
+            <Input
+              value={this.state.trip.highlights}
+              onChange={this.handleInputChange}
+              icon="glyphicon glyphicon-thumbs-up"
+              type="textarea"
+              name="highlights"
+              placeholder="Activities, Dining, Accomodations, etc."
+            />
+          </div>
+        </div>
+        <div class="row formMargin">
+          <div class="col-md-12">
+            <span>Things to do differently next time</span>
+            <Input
+              value={this.state.trip.changes}
+              onChange={this.handleInputChange}
+              icon="glyphicon glyphicon-thumbs-down"
+              type="textarea"
+              name="changes"
+              placeholder="Activities, Dining, Accomodations, etc."
+            />
+          </div>
+        </div>
+      
       <button onClick={() => this.handleUpdate(false)}>Cancel</button>
       <FormBtn
-        disabled={!(this.state.trip.when && this.state.trip.where)}
+        //disabled={!(this.state.trip.when && this.state.trip.where)}
         onClick={this.handleFormUpdate}
       >
         Submit Trip
             </FormBtn>
-
+            </div>
     </form>
   );
 

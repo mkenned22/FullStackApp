@@ -6,9 +6,7 @@ class UpdateBtn extends React.Component {
   
   render () {
     return (
-      <span className="update-btn" onClick={this.props.onClick}>
-        ✗
-      </span>
+      <button type="button" class="btn btn-dark" onClick={this.props.onClick}>Update</button>
     );
   }
 }
