@@ -422,7 +422,7 @@ class Dashboard extends React.Component {
       <div class="container greyBackground">
       <div class="row formMargin">
         <div class="col-md-12">
-          <h3>Update Trip Detail</h3>
+          {/* <h3>Update Trip Detail</h3> */}
         </div>
       </div>
         <div class="row formMargin">
