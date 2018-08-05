@@ -157,7 +157,7 @@ class Dashboard extends React.Component {
   handleFormUpdate = event => {
     event.preventDefault();
     this.handleUpdate(false);
-    if (this.state.trip.where && this.state.trip.when) {
+    if (this.state.trip.where) {
       API.patchTrip(this.state.trip._id, this.state.trip)
         .then(res => this.loadTrips(this.state.username))
         .catch(err => console.log(err));
