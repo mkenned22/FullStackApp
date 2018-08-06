@@ -34,7 +34,13 @@ const tripFunctions = {
       .then(dbModel => dbModel.remove())
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
-  }
+  },
+  findAllThatContain: function (req, res) {
+    db
+      .find({"where":{$regex:".*"+req.params.id+".*"}})
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
 }
 
 router.get("/api/dashboard/trips/:id", tripFunctions.findAll)
@@ -46,6 +52,8 @@ router.delete("/api/dashboard/:id", tripFunctions.remove)
 router.get("/api/dashboard/:id", tripFunctions.findById)
 
 router.patch("/api/dashboard/:id", tripFunctions.update)
+
+router.get("/api/search/:id", tripFunctions.findAllThatContain)
 
 // If no API routes are hit, send the React app
 router.use(function (req, res) {

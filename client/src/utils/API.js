@@ -20,4 +20,7 @@ export default {
   patchTrip: function (id, tripData) {
     return axios.patch("/api/dashboard/" + id, tripData);
   },
+  searchTrips: function (id) {
+    return axios.get("/api/search/" + id);
+  }
 };

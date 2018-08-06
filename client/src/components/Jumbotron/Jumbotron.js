@@ -1,4 +1,5 @@
 import React from "react";
+import API from "../../utils/API";
 
 const containerStyles = {
   "display": "flex",
@@ -22,16 +23,26 @@ const titleStyle = {
 
 class Jumbotron extends React.Component {
 
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
 }
+
+handleFormSubmit = event => {
+  event.preventDefault();
+  this.handleSubmit(false);
+  if (this.state.where && this.state.from && this.state.to && this.state.cost && this.state.people && this.state.highlights && this.state.changes) {
+    API.searchTrips()
+      .then(res => this.loadTrips(this.state.username))
+      .catch(err => console.log(err));
+  }
+};
 
   render() {
     const loggedIn = this.props.loggedIn;
     return (
       <div class="container" style={containerStyles}>
         <div class="jumbotron" style={jumbotronStyles}>
-        <h2 id="journey" style={titleStyle}>Start your next journey...</h2>
+        <h2 id="journey" style={titleStyle}>Find your next escape...</h2>
           <div class="row">
             <div class="col-lg-6 col-lg-offset-3">
               <div class="input-group" style={inputStyles}>

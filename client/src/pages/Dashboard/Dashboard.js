@@ -8,6 +8,7 @@ import { Col, Row, Container } from "../../components/Grid";
 import { List, ListItem } from "../../components/List";
 import { Input, TextArea, FormBtn } from "../../components/Form";
 import './style.css'
+import GoogleMapsImage from './GoogleMapsImage.png'
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -170,6 +171,10 @@ class Dashboard extends React.Component {
     <div class="container greyBackground">
       <div class="row">
         <div class="col-md-6">
+          <h3>You have recorded {this.state.trips.length} trips!</h3>
+          <h5>Let us help you get started on your next adventure.</h5>
+          <img id="googleimg" src={GoogleMapsImage}/>
+
           <h3>Your Travel Blog</h3>
           {this.state.trips.length ? (
             <div>
@@ -178,11 +183,9 @@ class Dashboard extends React.Component {
                   return (
                     <ListItem key={trip._id}>
                       <span>
-                        <strong>Where:</strong> {trip.where}<br />
-                        <strong>From:</strong> {trip.from}<br />
-                        <strong>To:</strong> {trip.to}<br />
-                        <strong>Cost:</strong> ${trip.cost}<br />
-                        <strong>People:</strong> {trip.people}<br />
+                        <strong>Where:</strong> {trip.where} ({trip.from} to {trip.to}) <br />
+                        <strong>Cost:</strong> ${trip.cost}
+                        <strong> People:</strong> {trip.people}<br />
                         <strong>Highlights:</strong> {trip.highlights}<br />
                         <strong>This to do differently:</strong> {trip.changes}<br />
                       </span>
@@ -268,7 +271,7 @@ class Dashboard extends React.Component {
             <div class="row formMargin">
               <div class="col-md-12">
                 <span>Some Highlights</span>
-                <Input
+                <TextArea
                   value={this.state.highlights}
                   onChange={this.handleSubmitChange}
                   icon="glyphicon glyphicon-thumbs-up"
@@ -281,7 +284,7 @@ class Dashboard extends React.Component {
             <div class="row formMargin">
               <div class="col-md-12">
                 <span>Things to do differently next time</span>
-                <Input
+                <TextArea
                   value={this.state.changes}
                   onChange={this.handleSubmitChange}
                   icon="glyphicon glyphicon-thumbs-down"
