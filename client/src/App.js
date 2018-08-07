@@ -7,6 +7,7 @@ import LoginForm from './components/login-form'
 import Navbar from './components/navbar'
 import Home from './components/home'
 import Dashboard from './pages/Dashboard'
+import Search from './pages/Search'
 
 class App extends Component {
   constructor() {
@@ -60,6 +61,9 @@ class App extends Component {
         <Route
           exact path="/"
           component={Home} />
+          <Route
+          exact path="/search"
+          component={Search} />
         <Route
           path="/login"
           render={() =>

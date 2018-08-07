@@ -183,13 +183,15 @@ class Dashboard extends React.Component {
                   return (
                     <ListItem key={trip._id}>
                       <span>
-                        <strong>Where:</strong> {trip.where} ({trip.from} to {trip.to}) <br />
-                        <strong>Cost:</strong> ${trip.cost}
-                        <strong> People:</strong> {trip.people}<br />
-                        <strong>Highlights:</strong> {trip.highlights}<br />
-                        <strong>This to do differently:</strong> {trip.changes}<br />
+                        Where: {trip.where} ({trip.from} to {trip.to}) <br />
+                        Cost: ${trip.cost}<br />
+                        People: {trip.people}<br />
+                        Highlights: {trip.highlights}<br />
+                        This to do differently: {trip.changes}<br />
                       </span>
                       <UpdateBtn onClick={() => this.getTrip(trip._id)} />
+                      <span> </span>
+                      
                       <DeleteBtn onClick={() => this.deleteTrip(trip._id)} />
                     </ListItem>
                   );
@@ -494,7 +496,7 @@ class Dashboard extends React.Component {
         <div class="row formMargin">
           <div class="col-md-12">
             <span>Some Highlights</span>
-            <Input
+            <TextArea
               value={this.state.trip.highlights}
               onChange={this.handleInputChange}
               icon="glyphicon glyphicon-thumbs-up"
@@ -507,7 +509,7 @@ class Dashboard extends React.Component {
         <div class="row formMargin">
           <div class="col-md-12">
             <span>Things to do differently next time</span>
-            <Input
+            <TextArea
               value={this.state.trip.changes}
               onChange={this.handleInputChange}
               icon="glyphicon glyphicon-thumbs-down"

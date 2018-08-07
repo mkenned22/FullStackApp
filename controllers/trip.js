@@ -37,7 +37,7 @@ const tripFunctions = {
   },
   findAllThatContain: function (req, res) {
     db
-      .find({"where":{$regex:".*"+req.params.id+".*"}})
+      .find({"where":{$regex:`.*${req.params.id}.*`}})
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },

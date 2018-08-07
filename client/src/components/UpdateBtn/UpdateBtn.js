@@ -6,7 +6,7 @@ class UpdateBtn extends React.Component {
   
   render () {
     return (
-      <button type="button" class="btn btn-dark" onClick={this.props.onClick}>Update</button>
+      <button type="button" class="btn btn-success" onClick={this.props.onClick}>Update</button>
     );
   }
 }
